@@ -19,7 +19,7 @@ hub_r = 0.125; %radius of the hub to the beginning of the blade
 totalLength=3.5; % inches total length
 chord_max=0.75; % inches - the maximum chord width
 Cl = 0.8; %optimum coefficient of lift
-Om_des = 15000; %Desired rotational speed in RPM
+Om_des = 12000; %Desired rotational speed in RPM
 
 %Blade Planform Profile
 %the interpolation technique to derive the planform profile
@@ -177,7 +177,7 @@ function [Chord_size] = Chord_Thick(l,totalLength,chord_max,method)
 %Parameters denoting the information for the root of the blade
 Root_P = 0.0625; %Percent where the root ends
 Root_T_S = 0.33; %Percent of max. chord width at beginning of root
-Root_T_E = 0.8; %Percent of max. chord width at end of root
+Root_T_E = 0.5; %Percent of max. chord width at end of root
 
 %Parameters denoting the information for the expanding of the blade
 Expand_P = 0.13; %Percent where the expanding ends

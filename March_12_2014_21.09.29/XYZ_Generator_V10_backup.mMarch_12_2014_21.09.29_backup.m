@@ -19,7 +19,7 @@ hub_r = 0.125; %radius of the hub to the beginning of the blade
 totalLength=3.5; % inches total length
 chord_max=0.75; % inches - the maximum chord width
 Cl = 0.8; %optimum coefficient of lift
-Om_des = 15000; %Desired rotational speed in RPM
+Om_des = 12000; %Desired rotational speed in RPM
 
 %Blade Planform Profile
 %the interpolation technique to derive the planform profile
