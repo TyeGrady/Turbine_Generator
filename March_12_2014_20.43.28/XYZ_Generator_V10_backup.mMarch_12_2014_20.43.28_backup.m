@@ -114,7 +114,7 @@ for l=0:(totalLength/(detail-1)):(totalLength)
     tempXYZ=Section(2,i)*xyz;
     
     % this is for aligning the centroids of the airfoils
-    %Ct=centroid(tempXYZ); % Download it from Mathworks website
+    Ct=centroid(tempXYZ); % Download it from Mathworks website
 
     %This section of code will keep the leading edge straight
     %xShift=[(-1) * Section(3,i) 0];
@@ -177,11 +177,11 @@ function [Chord_size] = Chord_Thick(l,totalLength,chord_max,method)
 %Parameters denoting the information for the root of the blade
 Root_P = 0.0625; %Percent where the root ends
 Root_T_S = 0.33; %Percent of max. chord width at beginning of root
-Root_T_E = 1.0; %Percent of max. chord width at end of root
+Root_T_E = 0.75; %Percent of max. chord width at end of root
 
 %Parameters denoting the information for the expanding of the blade
-Expand_P = 0.35; %Percent where the expanding ends
-Expand_T_E = 0.70; %Percent of max. chord width at end of root
+Expand_P = 0.1975; %Percent where the expanding ends
+Expand_T_E = 1; %Percent of max. chord width at end of root
 
 %Parameters denoting the information for the shrinking of the blade
 Shrink_P = 1; %Percent where the shrinking ends

@@ -1,4 +1,4 @@
-function [Section,Re] = XYZ_Generator_V9_Matrix()
+function [Section,Re] = XYZ_Generator_V10()
 % Here are the inputs of the script:
 %     l  - inches . The incremental length of the turbine blade ( l <=
 %                   totallength)
@@ -16,10 +16,10 @@ function [Section,Re] = XYZ_Generator_V9_Matrix()
 
 close all;clear all
 hub_r = 0.125; %radius of the hub to the beginning of the blade
-totalLength=3.0; % inches total length
+totalLength=3.5; % inches total length
 chord_max=0.75; % inches - the maximum chord width
 Cl = 0.8; %optimum coefficient of lift
-Om_des = 10000; %Desired rotational speed in RPM
+Om_des = 12000; %Desired rotational speed in RPM
 
 %Blade Planform Profile
 %the interpolation technique to derive the planform profile
@@ -35,10 +35,8 @@ detail = 15;
 
 % set the folder to write the turbine profile data.
 dt = datestr(now,'mmmm_dd_yyyy_HH.MM.SS')
-
 mkdir(dt)
-cd(dt);
-% Change this folder to a folder on your desktop. The script will write
+oldFolder = cd(dt);
 
 %This will create an empty Section matrix that stores all the values
 %row 1 - radial distance
@@ -116,7 +114,7 @@ for l=0:(totalLength/(detail-1)):(totalLength)
     tempXYZ=Section(2,i)*xyz;
     
     % this is for aligning the centroids of the airfoils
-    Ct=centroid(tempXYZ); % Download it from Mathworks website
+    %Ct=centroid(tempXYZ); % Download it from Mathworks website
 
     %This section of code will keep the leading edge straight
     %xShift=[(-1) * Section(3,i) 0];
@@ -165,9 +163,12 @@ Re
 %Same folder as the profile files
 Version=dt;
 FileNameAndLocation=[mfilename('fullpath')];
-newbackup=sprintf('%sbackup%s.m',FileNameAndLocation,Version);
+New_FileNameAndLocation=[mfilename(dt)];
+newbackup=sprintf('%s_backup.m',New_FileNameAndLocation,Version);
 currentfile=strcat(FileNameAndLocation, '.m');
 copyfile(currentfile,newbackup);
+
+cd(oldFolder);
 
 end
 
@@ -176,11 +177,11 @@ function [Chord_size] = Chord_Thick(l,totalLength,chord_max,method)
 %Parameters denoting the information for the root of the blade
 Root_P = 0.0625; %Percent where the root ends
 Root_T_S = 0.33; %Percent of max. chord width at beginning of root
-Root_T_E = 0.75; %Percent of max. chord width at end of root
+Root_T_E = 1.0; %Percent of max. chord width at end of root
 
 %Parameters denoting the information for the expanding of the blade
 Expand_P = 0.1975; %Percent where the expanding ends
-Expand_T_E = 1; %Percent of max. chord width at end of root
+Expand_T_E = 0.85; %Percent of max. chord width at end of root
 
 %Parameters denoting the information for the shrinking of the blade
 Shrink_P = 1; %Percent where the shrinking ends
@@ -210,6 +211,6 @@ alpha = Alpha;
 w = r*Om_des;
 
 phi = (2/3) * atan(w/u);
-theta = alpha - phi ;
+theta = alpha + phi ;
 
 end
