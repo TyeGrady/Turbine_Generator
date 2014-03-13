@@ -1,4 +1,4 @@
-function [Section,Re] = XYZ_Generator_V8_Matrix()
+function [Section,Re] = XYZ_Generator_V9_Matrix()
 % Here are the inputs of the script:
 %     l  - inches . The incremental length of the turbine blade ( l <=
 %                   totallength)
@@ -34,11 +34,9 @@ V_r = 4; %radial distance to end wind speed measurement [in]
 detail = 15;
 
 % set the folder to write the turbine profile data.
-dt = datestr(now,'mmmm dd, yyyy HH:MM:SS.FFF AM')
-
-mkdir('Profile_Files_' & dt)
-cd('.\Profile_Files_' & dt);
-% Change this folder to a folder on your desktop. The script will write
+dt = datestr(now,'mmmm_dd_yyyy_HH.MM.SS')
+mkdir(dt)
+cd(dt);
 
 %This will create an empty Section matrix that stores all the values
 %row 1 - radial distance
@@ -76,7 +74,7 @@ for l=0:(totalLength/(detail-1)):(totalLength)
     iaf.n=30;
     iaf.HalfCosineSpacing=1;
     iaf.wantFile=1;
-    iaf.datFilePath='.\Profile_Files_' & dt; % Current folder
+    iaf.datFilePath='./'; % Current folder
     iaf.is_finiteTE=0;
     blade = naca4gen(iaf);
     xyz=[blade.xU blade.zU;blade.xL(2:end) blade.zL(2:end)];
@@ -133,7 +131,7 @@ for l=0:(totalLength/(detail-1)):(totalLength)
     n=n+1;
     %     create a new filename
     nstr=num2str(n); % changing the n to string
-    filename=strcat('xyz',nstr,'.sldcrv');
+    filename=strcat('Profile_',nstr,'.sldcrv');
     
     profile(n,:,:)=[tempXYZ' l*ones(lxyz,1)];
     profileLine(n,:)=[profile(n,1,1) profile(n,1,2) l];
@@ -161,6 +159,14 @@ ylabel('Apparent Wind Speed [mph]');
 
 Re
 
+%This code will write the current version of the code to the
+%Same folder as the profile files
+Version=dt;
+FileNameAndLocation=[mfilename('fullpath')];
+newbackup=sprintf('%sbackup%s.m',FileNameAndLocation,Version);
+currentfile=strcat(FileNameAndLocation, '.m');
+copyfile(currentfile,newbackup);
+
 end
 
 function [Chord_size] = Chord_Thick(l,totalLength,chord_max,method)
@@ -184,19 +190,7 @@ v = [Root_T_S Root_T_E Expand_T_E Shrink_T_E];
 xq = (l/totalLength);
 Chord_size = chord_max * interp1(x,v,xq,method);
 
-
-%This code will write the current version of the code to the
-%Same folder as the profile files
-Version=dt;
-FileNameAndLocation=[mfilename('fullpath')];
-newbackup=sprintf('%sbackup%s.m',FileNameAndLocation,Version);
-currentfile=strcat(FileNameAndLocation, '.m');
-copyfile(currentfile,newbackup);
-
-
-
 end
-
 
 function [theta] = Twist_Exp(l,hub_r,Om_des,u)
 
